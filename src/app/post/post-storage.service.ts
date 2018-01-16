@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import {PostModel} from './post-model';
+import {Comment} from './comment-model';
 import {PostService} from './post.service';
 import 'rxjs/Rx';
 
@@ -34,6 +35,11 @@ export class PostStorageService {
       const post: PostModel = res.json();
       return post;
     })
+  }
+
+  //CREATE COMMENT
+  createComment(comment: Comment) {
+    console.log("CAMBIAR LOS ID");
   }
 
 }

@@ -10,4 +10,10 @@
 			<p>{{comment.text}}</p>
 		</div>
 	</div>
+	<div class="formulario">
+			<input name="author" type="text" class="form-control" [(ngModel)] = "comment.author" >
+			<hr>
+			<textarea name="text" id="" cols="30" rows="4" [(ngModel)]="comment.text" ></textarea>
+	</div>
 </div>
+<button class="btn btn-success" (click)="addComment()">Add comment</button>

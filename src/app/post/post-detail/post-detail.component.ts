@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-
+import {Comment} from '../comment-model';
 import {PostModel} from '../post-model';
 import {PostService} from '../post.service';
 
@@ -11,6 +11,10 @@ import {PostService} from '../post.service';
 })
 export class PostDetailComponent implements OnInit {
 	post: PostModel;
+  comment: Comment = {
+    text: "",
+    author: ""
+  };
 	id: number;
 
   constructor(private postService: PostService, 
@@ -23,6 +27,14 @@ export class PostDetailComponent implements OnInit {
   			this.id = +params["id"];
   			this.post = this.postService.getPost(this.id);
   		});
+  }
+
+  addComment() {
+    this.postService.addComment(this.id, this.comment);
+    this.comment = {
+      text: "",
+      author: ""
+    };
   }
 
 }

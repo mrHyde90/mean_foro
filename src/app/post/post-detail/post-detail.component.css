@@ -8,7 +8,12 @@
 	border-radius: 5px;
 }
 
-
+.formulario {
+	background-color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
 
 .header {
 	border-bottom: 2px solid black;

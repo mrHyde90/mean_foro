@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {PostModel} from './post-model';
 import { Subject } from 'rxjs/Subject';
+import {Comment} from './comment-model';
 
 @Injectable()
 export class PostService {
@@ -17,6 +18,13 @@ export class PostService {
   //SHOW
   getPost(index: number) {
   	return this.posts[index];
+  }
+
+  //ADD COMMENT
+  addComment(index: number, comment: Comment) {
+    console.log("estas agregando un comentario");
+    this.posts[index].comments.push({...comment});
+    this.postsChanged.next(this.posts.slice());
   }
 
   //CREATE
