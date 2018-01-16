@@ -3,7 +3,9 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const Post = require("./server/models/post");
+const Comment = require("./server/models/comment");
 const postRoutes = require("./server/routes/apiPost");
+const commentRoutes = require("./server/routes/apiComment");
 const seedDB = require("./server/seedDB");
 
 const url = "mongodb://localhost/mean_foro";
@@ -22,6 +24,7 @@ app.get("/", function(req, res){
 seedDB();
 
 app.use("/api/post", postRoutes);
+app.use("/api/post/:id/comment", commentRoutes);
 
 var server = app.listen(3000, function(){
 	console.log("Bienvenido a la applicacion");

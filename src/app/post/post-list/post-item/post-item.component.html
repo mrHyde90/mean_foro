@@ -1,9 +1,9 @@
-<div class="postItemContainer">
+<a 
+	class="postItemContainer"
+	[routerLink]="[index]" 
+>
 	<div class="postItemHeader">
 		<h4 >{{postItem.title}}</h4>
 		<p  >{{postItem.author}}</p>
 	</div>
-	<div class="postItemTexto">
-		<p >{{postItem.texto}}</p>
-	</div>
-</div>
+</a>

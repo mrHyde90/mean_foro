@@ -1,0 +1,13 @@
+<div class="contenedor2">
+	<div class="header">
+		<h1>{{post.title}}</h1>
+		<h2>{{post.author}}</h2>
+	</div>
+	<p>{{post.texto}}</p>
+	<div class="comments">
+		<div class="comment" *ngFor="let comment of post.comments">
+			<p>{{comment.author}}</p>
+			<p>{{comment.text}}</p>
+		</div>
+	</div>
+</div>

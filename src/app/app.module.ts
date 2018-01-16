@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import {FormsModule} from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 
@@ -13,6 +14,9 @@ import { HomeComponent } from './home/home.component';
 import { PostListComponent } from './post/post-list/post-list.component';
 import {PostStorageService} from './post/post-storage.service';
 import { PostItemComponent } from './post/post-list/post-item/post-item.component';
+import { PostEditComponent } from './post/post-edit/post-edit.component';
+import { PostDetailComponent } from './post/post-detail/post-detail.component';
+import {PostService} from './post/post.service';
 
 @NgModule({
   declarations: [
@@ -23,14 +27,17 @@ import { PostItemComponent } from './post/post-list/post-item/post-item.componen
     PostComponent,
     HomeComponent,
     PostListComponent,
-    PostItemComponent
+    PostItemComponent,
+    PostEditComponent,
+    PostDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpModule
+    HttpModule,
+    FormsModule
   ],
-  providers: [PostStorageService],
+  providers: [PostStorageService, PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

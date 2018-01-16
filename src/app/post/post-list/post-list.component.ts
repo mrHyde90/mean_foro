@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {PostModel} from '../post-model';
+import {PostService} from '../post.service';
+import { Subscription } from 'rxjs/Subscription';
 import {PostStorageService} from '../post-storage.service';
 
 @Component({
@@ -7,40 +9,22 @@ import {PostStorageService} from '../post-storage.service';
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.css']
 })
-export class PostListComponent implements OnInit {
+export class PostListComponent implements OnInit, OnDestroy {
   posts: PostModel[]; 
+  subscription: Subscription;
 
-  constructor(private postStorageService: PostStorageService) { }
+  constructor( private postService: PostService, private postStorageService: PostStorageService) { }
 
   ngOnInit() {
-  	this.posts =  [
-    {
-    title: "Valentines day",
-    texto: "A black winter care away",
-    author: "Chester Benningtion"
-  }, 
-  {
-    title: "In the End",
-    texto: "I tried so hard and got so far, but in the end, it doesnt even matter",
-    author: "Mike Shinoda"
-  },
-  {
-    title: "little things give you away",
-    texto: "All you ever wanted, so wanna truly look up to you",
-    author: "Chester Benningtion"
-  },
-  {
-    title: "Adventure of the life time",
-    texto: "monitos  monitos y mas monitos seee",
-    author: "Coldplay"
-  }
-  ];
+    this.subscription = this.postService.postsChanged
+      .subscribe((posts: PostModel[]) => {
+        this.posts = posts;
+      });
+      this.postStorageService.getPosts();
   }
 
-  /*
-    this.postStorageService.getPosts().subscribe((posts: PostModel[]) => {
-      this.posts = posts;
-    });
-  */
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
 
 }
