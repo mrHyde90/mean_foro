@@ -15,15 +15,25 @@ export class PostService {
   	return this.posts.slice();
   }
 
+  //FINDINDEX
+  findIndexPost(index: string) {
+    const findIndex = this.posts.findIndex(post => {
+      return post._id === index;
+    });
+    return findIndex;
+  }
+
   //SHOW
-  getPost(index: number) {
-  	return this.posts[index];
+  getPost(index: string) {
+    const findIndex = this.findIndexPost(index);
+  	return this.posts[findIndex];
   }
 
   //ADD COMMENT
-  addComment(index: number, comment: Comment) {
+  addComment(index: string, comment: Comment) {
+    const findIndex = this.findIndexPost(index);
     console.log("estas agregando un comentario");
-    this.posts[index].comments.push({...comment});
+    this.posts[findIndex].comments.push({...comment});
     this.postsChanged.next(this.posts.slice());
   }
 
@@ -34,8 +44,9 @@ export class PostService {
   }
 
   //DELETE
-  removePost(index: number) {
-  	this.posts.splice(index, 1);
+  removePost(index: string) {
+    const findIndex = this.findIndexPost(index);
+  	this.posts.splice(findIndex, 1);
   	this.postsChanged.next(this.posts.slice());
   }
 
@@ -46,8 +57,9 @@ export class PostService {
   }
 
   //UPDATE
-  updatePost(updatePost: PostModel, index: number) {
-  	this.posts[index] = updatePost;
+  updatePost(updatePost: PostModel, index: string) {
+    const findIndex = this.findIndexPost(index);
+  	this.posts[findIndex] = updatePost;
   	this.postsChanged.next(this.posts.slice());
   }
 

@@ -37,9 +37,12 @@ export class PostStorageService {
     })
   }
 
-  //CREATE COMMENT
-  createComment(comment: Comment) {
-    console.log("CAMBIAR LOS ID");
+  //CREATE COMMENT /api/post/:id/comment
+  createComment(index: string, comment: Comment) {
+    return this.http.post(`${this.contactUrl}/${index}/comment`, comment).map((res:Response) => {
+      const newComment: Comment = res.json();
+      return newComment;
+    });
   }
 
 }

@@ -31,27 +31,34 @@ function seedDB() {
 			console.log(err);
 		} else {
 			console.log("Remove Posts");
-			data.forEach(function(seed){
-				Post.create(seed, function(err, newPost){
-					if(err) {
-						console.log(err);
-					} else {
-						console.log("Nuevo post creado");
-						Comment.create({
-							text: "I love the internet man",
-							author: "Homer"
-						}, function(err, comment) {
+			Comment.remove({}, function(err){
+				if(err){
+					console.log(err);
+				} else{
+					console.log("todos los comentarios removidos");
+					data.forEach(function(seed){
+						Post.create(seed, function(err, newPost){
 							if(err) {
 								console.log(err);
 							} else {
-								newPost.comments.push(comment);
-								newPost.save();
-								console.log("Nuevo comentario creado");
+								console.log("Nuevo post creado");
+								Comment.create({
+									text: "I love the internet man",
+									author: "Homer"
+								}, function(err, comment) {
+									if(err) {
+										console.log(err);
+									} else {
+										newPost.comments.push(comment._id);
+										newPost.save();
+										console.log("Nuevo comentario creado");
+									}
+								});
 							}
 						});
-					}
-				});
-			});
+					});
+				}
+			})
 		}
 	});
 }
