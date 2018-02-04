@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 //SEEDING DATABASE
-seedDB();
+//seedDB();
 
 //ROUTES
 app.use("/api/post", postRoutes);

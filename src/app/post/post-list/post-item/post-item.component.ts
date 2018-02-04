@@ -8,8 +8,6 @@ import {PostModel} from '../../post-model';
 })
 export class PostItemComponent implements OnInit {
 	@Input() postItem: PostModel;
-	@Input() index: number;
-
 
   constructor() { }
 

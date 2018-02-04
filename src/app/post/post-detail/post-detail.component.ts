@@ -4,6 +4,7 @@ import {Comment} from '../comment-model';
 import {PostModel} from '../post-model';
 import {PostService} from '../post.service';
 import {PostStorageService} from '../post-storage.service';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -12,16 +13,14 @@ import {PostStorageService} from '../post-storage.service';
 })
 export class PostDetailComponent implements OnInit {
 	post: PostModel;
-  comment: Comment = {
-    text: "",
-    author: ""
-  };
+  comment: string;
 	id: string;
 
   constructor(private postService: PostService, 
   			  private router: Router, 
   			  private route: ActivatedRoute,
-          private postStorageService: PostStorageService) { }
+          private postStorageService: PostStorageService,
+          private authService: AuthService) { }
 
   ngOnInit() {
   	this.route.params.subscribe(
@@ -32,16 +31,12 @@ export class PostDetailComponent implements OnInit {
   }
 
   addComment() {
-    //this.postService.addComment(this.id, this.comment);
     this.postStorageService.createComment(this.id, this.comment).subscribe(
       (newComment: Comment) => {
         this.postService.addComment(this.id, newComment);
+        this.comment = "";
       }
     );
-    this.comment = {
-      text: "",
-      author: ""
-    };
   }
 
 }

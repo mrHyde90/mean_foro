@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router({mergeParams: true});
 var Comment = require("../models/comment");
 var Post = require("../models/post");
+const CheckAuth = require("../middleware/check-auth");
 
 //INDEX
 router.get("/", (req, res, next)=>{
@@ -16,24 +17,40 @@ router.get("/", (req, res, next)=>{
 });
 
 //POST
-router.post("/", function(req, res){
+router.post("/", CheckAuth.checkAuth, function(req, res){
 	var id = req.params.id;
-	Post.findById(id, function(err, foundPost){
-		if(err) {
-			console.log(err);
-		} else {
-			Comment.create(req.body, function(err, newComment){
-				if(err) {
-					console.log(err);
-				} else {
-					foundPost.comments.push(newComment._id);
-					foundPost.save();
-					console.log("El comentario asido creado papi");
-					res.status(201).json(newComment);
-				}
-			})
-		}
+	Post.findById(id)
+	.exec()
+	.then(foundPost => {
+		var newComment = new Comment({
+			text: req.body.text,
+			postId: foundPost._id,
+			author: {
+				id: req.userData.userId,
+				username: req.userData.username
+			}
+		});
+		newComment.save()
+		.then(comment => {
+			foundPost.comments.push(comment._id);
+			foundPost.save();
+			res.status(201).json({
+				_id: comment._id,
+				text: comment.text,
+				author: comment.author
+			});
+		})
+		.catch(err => {
+			res.status(500).json({
+				error: err
+			});
+		});
 	})
+	.catch(err => {
+		res.status(500).json({
+			error: err
+		});
+	}); 
 });
 
 //SHOW
@@ -51,8 +68,11 @@ router.get("/:commentId", (req, res, next) => {
 	});
 });
 
+//UPDATE
+
+
 //DELETE
-router.delete("/:commentId", (req, res, next) => {
+router.delete("/:commentId", CheckAuth.checkCommentOwnerShip, (req, res, next) => {
 	var id = req.params.commentId;
 	Comment.remove({ _id: id})
 	.exec()

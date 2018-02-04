@@ -17,6 +17,8 @@ import { PostItemComponent } from './post/post-list/post-item/post-item.componen
 import { PostEditComponent } from './post/post-edit/post-edit.component';
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import {PostService} from './post/post.service';
+import {AuthService} from './auth/auth.service';
+import {UserService} from './shared/user.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import {PostService} from './post/post.service';
     HttpModule,
     FormsModule
   ],
-  providers: [PostStorageService, PostService],
+  providers: [PostStorageService, PostService, AuthService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

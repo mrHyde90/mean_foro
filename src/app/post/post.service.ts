@@ -33,7 +33,7 @@ export class PostService {
   addComment(index: string, comment: Comment) {
     const findIndex = this.findIndexPost(index);
     console.log("estas agregando un comentario");
-    this.posts[findIndex].comments.push({...comment});
+    this.posts[findIndex].comments.push(comment);
     this.postsChanged.next(this.posts.slice());
   }
 

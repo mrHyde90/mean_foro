@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const CheckAuth = require("../middleware/check-auth");
 
 
 //SIGNUP
@@ -33,8 +34,26 @@ router.post("/signup", (req, res, next)=> {
 					//lo salvamos en la database
 					user.save()
 					.then(result => {
+
+						const token = jwt.sign(
+						{
+							email: result.email,
+							username: result.username,
+							userId: result._id
+						},
+						"secret", 
+						{
+							expiresIn: "1h"
+						}
+					);
+
 						res.status(201).json({
-							message: "User created"
+							token: token,
+							user: {
+								_id: result._id,
+								email: result.email,
+								username: result.username
+							}
 						});
 					})
 					.catch(err => {
@@ -46,6 +65,22 @@ router.post("/signup", (req, res, next)=> {
 			});
 		}
 	});
+});
+
+//index users
+router.get("/", function(req, res, next){
+	User.find({})
+	.then(user => {
+		res.status(200).json({
+			message: "Success",
+			user: user
+		});
+	})
+	.catch(err => {
+		res.status(500).json({
+			error: err
+		});
+	})
 });
 
 //LOGIN
@@ -71,6 +106,7 @@ router.post("/login", (req, res, next)=>{
 					const token = jwt.sign(
 						{
 							email: user[0].email,
+							username: user[0].username,
 							userId: user[0]._id
 						},
 						"secret", 
@@ -79,8 +115,12 @@ router.post("/login", (req, res, next)=>{
 						}
 					);
 					return res.status(200).json({
-						message: "Auth successful",
-						token: token
+						token: token,
+						user: {
+							_id: user[0]._id,
+							email: user[0].email,
+							username: user[0].username
+						}
 					});
 				}
 				res.status(401).json({
@@ -96,14 +136,34 @@ router.post("/login", (req, res, next)=>{
 })
 
 //DELETE
-router.delete("/:userId", (req, res, next) => {
+router.delete("/:userId", CheckAuth.checkAuth, (req, res, next) => {
+	console.log("lograste entrar");
+	console.log(req.userData);
 	const id = req.params.userId;
 	User.remove({ _id: id })
 	.exec()
-	.then(result => {
-		res.status(200).json({
-			message: "Usuario borrado"
-		});
+	.then(deleteUser => {
+		Post.remove({author: {id: deleteUser._id }})
+		.exec()
+		.then(removePost => {
+			Comment.remove({postId: removePost._id})
+			.exec()
+			.then(deleteComment => {
+				res.status(200).json({
+					message: "todo borrado"
+				});
+			})
+			.catch(err => {
+				res.status(500).json({
+					error: err
+				})
+			})
+		})
+		.catch(err => {
+			res.status(500).json({
+				error: err
+			})
+		})
 	})
 	.catch(err => {
 		res.status(500).json({

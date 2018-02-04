@@ -12,16 +12,10 @@ import {PostStorageService} from "../post-storage.service";
 })
 export class PostEditComponent implements OnInit {
 	@ViewChild('f') signupForm: NgForm;
-	post: PostModel = {
-		author: "",
-		texto: "",
-		title: "",
-    comments: []
-	}
 	submitted = false;
 	
 
-  constructor(private postStorageService: PostStorageService, 
+  constructor(private postStorageService: PostStorageService,
               private postService: PostService,
               private router: Router) { }
 
@@ -30,10 +24,13 @@ export class PostEditComponent implements OnInit {
 
   onSubmit() {
   	this.submitted = true;
-  	this.post = this.signupForm.value;
-  	this.postStorageService.createPost(this.post)
+  	const post = {
+      title: this.signupForm.value.title,
+      text: this.signupForm.value.texto
+    };
+  	this.postStorageService.createPost(post)
       .subscribe((newPost: PostModel) => {
-      this.postService.addPost(newPost);
+        this.postService.addPost(newPost);
       this.router.navigate(["/post"]);
     });;
   }

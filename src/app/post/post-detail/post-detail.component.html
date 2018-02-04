@@ -1,20 +1,17 @@
 <div class="contenedor2">
 	<div class="header">
 		<h2>{{post.title}}</h2>
-		<h2>{{post.author}}</h2>
-
+		<h2>{{post.author.username}}</h2>
 	</div>
 	<p>{{post.texto}}</p>
 	<div class="comments">
 		<div class="comment" *ngFor="let comment of post.comments">
-			<p>{{comment.author}}</p>
+			<p>{{comment.author.username}}</p>
 			<p>{{comment.text}}</p>
 		</div>
 	</div>
-	<div class="formulario">
-			<input name="author" type="text" class="form-control" [(ngModel)] = "comment.author" >
-			<hr>
-			<textarea name="text" id="" cols="30" rows="4" [(ngModel)]="comment.text" ></textarea>
+	<div class="formulario" *ngIf="authService.isAuthenticated()">
+			<textarea name="text" id="" cols="30" rows="4" [(ngModel)]="comment" ></textarea>
 	</div>
 </div>
-<button class="btn btn-success" (click)="addComment()">Add comment</button>
+<button class="btn btn-success" (click)="addComment()" *ngIf="authService.isAuthenticated()">Add comment</button>
