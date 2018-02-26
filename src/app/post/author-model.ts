@@ -1,4 +1,4 @@
 export class Author {
-	_id?: string;
+	id?: string;
 	username: string;
 }

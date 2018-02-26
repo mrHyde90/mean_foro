@@ -4,6 +4,8 @@ export class PostModel {
 	_id?: string;
 	title: string;
 	texto: string;
-	author: Author;
-	comments: Comment[];
+	categories: string[];
+	created_at?: Date;
+	author?: Author;
+	comments?: Comment[];
 }

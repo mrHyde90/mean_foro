@@ -9,6 +9,7 @@ const postRoutes = require("./server/routes/apiPost");
 const commentRoutes = require("./server/routes/apiComment");
 const authRoutes = require("./server/routes/apiAuth");
 const seedDB = require("./server/seedDB");
+const http = require('http');
 
 const url = "mongodb://localhost/mean_foro";
 mongoose.connect(url);
@@ -42,9 +43,13 @@ app.use("/api/post", postRoutes);
 app.use("/api/post/:id/comment", commentRoutes);
 app.use("/api/auth", authRoutes);
 
+app.get("*", (req, res) => {
+  res.sendFile(__dirname + '/dist/index.html');
+});
+
 //HAANDLING ERRORS
 app.use((req, res, next) => {
-  const error = new Error("Not found");
+  const error = new Error("Not found hermano");
   error.status = 404;
   next(error);
 });
@@ -58,6 +63,9 @@ app.use((error, req, res, next) => {
   });
 });
 
-var server = app.listen(3000, function(){
-	console.log("Bienvenido a la applicacion");
-});
+const port = process.env.PORT || '3000';
+app.set('port', port);
+
+const server = http.createServer(app);
+
+server.listen(port, () => console.log(`API running on localhost:${port}`));

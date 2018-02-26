@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import {FormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import {AppRoutingModule} from './app-routing.module';
 
@@ -19,6 +20,10 @@ import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import {PostService} from './post/post.service';
 import {AuthService} from './auth/auth.service';
 import {UserService} from './shared/user.service';
+import {DropdownDirective} from './shared/dropdown.directive';
+import { UserComponent } from './user/user.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { ShortenPipe } from './shared/shorten.pipe';
 
 @NgModule({
   declarations: [
@@ -31,13 +36,18 @@ import {UserService} from './shared/user.service';
     PostListComponent,
     PostItemComponent,
     PostEditComponent,
-    PostDetailComponent
+    PostDetailComponent,
+    DropdownDirective,
+    UserComponent,
+    ErrorPageComponent,
+    ShortenPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [PostStorageService, PostService, AuthService, UserService],
   bootstrap: [AppComponent]

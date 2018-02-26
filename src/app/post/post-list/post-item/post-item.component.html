@@ -6,4 +6,6 @@
 		<h3 >{{postItem.title}}</h3>
 		<p  >{{postItem.author.username}}</p>
 	</div>
+	<h3 class="postItemFecha">{{postItem.created_at | date:'medium'}}</h3>
+	<p class="postItemTexto">{{postItem.texto | shorten:80}}</p>
 </a>

@@ -4,8 +4,6 @@ var User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const CheckAuth = require("../middleware/check-auth");
-
-
 //SIGNUP
 router.post("/signup", (req, res, next)=> {
 	//asegurarnos de que sea unico
@@ -46,11 +44,11 @@ router.post("/signup", (req, res, next)=> {
 							expiresIn: "1h"
 						}
 					);
-
 						res.status(201).json({
 							token: token,
 							user: {
 								_id: result._id,
+								created_at: result.created_at,
 								email: result.email,
 								username: result.username
 							}
@@ -67,7 +65,7 @@ router.post("/signup", (req, res, next)=> {
 	});
 });
 
-//index users
+//index users, usar solo como moderador
 router.get("/", function(req, res, next){
 	User.find({})
 	.then(user => {
@@ -82,6 +80,26 @@ router.get("/", function(req, res, next){
 		});
 	})
 });
+
+//SHOW user
+router.get("/:id",(req, res, next) => {
+	User.findById(req.params.id)
+	.exec()
+	.then(user => {
+		res.status(200).json({
+			user: {
+				_id: user._id,
+				username: user.username,
+				email: user.email
+			}
+		})
+	})
+	.catch(err => {
+		res.status(500).json({
+			error : err
+		})
+	})
+})
 
 //LOGIN
 router.post("/login", (req, res, next)=>{
@@ -118,6 +136,7 @@ router.post("/login", (req, res, next)=>{
 						token: token,
 						user: {
 							_id: user[0]._id,
+							created_at: user[0].created_at,
 							email: user[0].email,
 							username: user[0].username
 						}
@@ -134,6 +153,7 @@ router.post("/login", (req, res, next)=>{
 		});
 	});
 })
+
 
 //DELETE
 router.delete("/:userId", CheckAuth.checkAuth, (req, res, next) => {

@@ -19,21 +19,20 @@ export class PostStorageService {
 
   //INDEX, /api/post
   getPosts(){
-  	this.http.get(this.contactUrl).map((res: Response) => {
+  	return this.http.get(this.contactUrl).map((res: Response) => {
   		const allPosts:PostModel[] = res.json();
       for(let post of allPosts){
         if(!post["comments"]){
           post["comments"] = [];
         }
       }
+      this.postService.setPosts(allPosts);
   		return allPosts;
-  	}).subscribe((posts: PostModel[]) => {
-       this.postService.setPosts(posts);
-    });
+  	});
   }
 
   //CREATE POST, api/post/
-  createPost(newPost: {title: string, text: string}) {
+  createPost(newPost: PostModel) {
     const token = this.authService.getToken();
     const headers = new Headers({'authorization': `bearer ${token}`});
     return this.http.post(this.contactUrl, newPost, {headers: headers}).map((res:Response) => {
@@ -42,12 +41,14 @@ export class PostStorageService {
     });
   }
 
-  //SHOW, /api/post/:id
-  getPost(index: string) {
-    return this.http.get(`${this.contactUrl}/${index}`).map((res:Response) => {
-      const foundPost:PostModel = res.json();
-      return foundPost;
-    });
+  //UPDATE APPLICTION
+  updatePost(index: string, updatePost: PostModel ) {
+    const token = this.authService.getToken();
+    const headers = new Headers({'authorization': `bearer ${token}`});
+    return this.http.patch(`${this.contactUrl}/${index}`, updatePost, {headers: headers}).map((res:Response)=>{
+        const mensaje:string = res.json();
+        return mensaje;
+    });  
   }
 
   //DELETE POST, api/post/:id
@@ -55,8 +56,8 @@ export class PostStorageService {
     const token = this.authService.getToken();
     const headers = new Headers({'authorization': `bearer ${token}`});
     return this.http.delete(`${this.contactUrl}/${index}`, {headers: headers}).map((res: Response) => {
-      const message: string = res.json();
-      return message;
+      const _id: string = res.json();
+      return _id;
     });
   }
 

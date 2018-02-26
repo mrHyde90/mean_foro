@@ -20,7 +20,19 @@
           <li routerLinkActive="active"><a routerLink="/signin">SignIn</a></li>
           <li routerLinkActive="active"><a routerLink="/signup">SignUp</a></li>
         </ng-template>
-        <li ><a (click)="onLogout()" *ngIf="authService.isAuthenticated()">Logout</a></li>
+
+        <ng-template [ngIf]="authService.isAuthenticated()">
+          <li ><a (click)="onLogout()" >Logout</a></li>
+
+          <li class="dropdown" appDropdown >
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{user.username}} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a routerLink="/user" >Profile</a></li>
+              <li><a href="#">Settings</a></li>
+            </ul>
+          </li>
+
+        </ng-template>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

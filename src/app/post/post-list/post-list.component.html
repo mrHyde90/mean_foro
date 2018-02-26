@@ -1,11 +1,11 @@
+
 <div class="container">
-<a class="btn btn-default" routerLink="new" *ngIf="authService.isAuthenticated()">Add Post</a>
+<a class="btn btn-default" routerLink="new" *ngIf="authService.isAuthenticated()">Add Post</a> 
 	<div class="row">
 		<div class="col-xs-12">
 			<app-post-item
 				*ngFor="let post of posts"
-				[postItem] ="post"
-			></app-post-item>
+				[postItem] ="post"></app-post-item> 
 		</div>
 	</div>
 </div>

@@ -8,6 +8,7 @@ const CheckAuth = require("../middleware/check-auth");
 router.get("/", function(req, res){
 	console.log("estas dentro de la api");
 	Post.find({})
+	.sort({created_at: -1})
 	.populate("comments")
 	.exec()
 	.then(foundPosts => {
@@ -16,6 +17,7 @@ router.get("/", function(req, res){
 				return {
 					_id: foundComments._id,
 					text: foundComments.text,
+					created_at: foundComments.created_at,
 					author: foundComments.author
 				};
 			});
@@ -23,6 +25,7 @@ router.get("/", function(req, res){
 				_id: foundPost._id,
 				title: foundPost.title,
 				texto: foundPost.texto,
+				created_at: foundPost.created_at,
 				author: foundPost.author,
 				comments: comentarios
 			};
@@ -42,7 +45,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 	console.log(req.userData);
 	var newPost = new Post({
 		title: req.body.title,
-		texto: req.body.text,
+		texto: req.body.texto,
 		author: {
 			id: req.userData.userId,
 			username: req.userData.username
@@ -54,6 +57,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 			_id: post._id,
 			title: post.title,
 			texto: post.texto,
+			created_at: post.created_at,
 			author: post.author,
 			comments: []
 		});
@@ -84,6 +88,7 @@ router.get("/:id", function(req, res){
 			_id: foundPost._id,
 			title: foundPost.title,
 			texto: foundPost.texto,
+			created_at: foundPost.created_at,
 			author: foundPost.author.username,
 			comments: newComments
 		});
@@ -96,12 +101,30 @@ router.get("/:id", function(req, res){
 //UPDATE
 router.patch("/:id", CheckAuth.checkPostOwnerShip, (req, res, next) =>{
 	const id = req.params.id;
-	const updateOps = {};
+	//const updateOps = {};
 	//solamente va a actualizar los campos que se encuentran
-	  for (const ops of req.body) {
+	//se pone porque no todos los campos seran llenados
+	//por ejemplo solo se llenaran texto y titulo
+	//pero _id, comments y author permanecen iguales
+	  /*for (const ops of req.body) {
 	    updateOps[ops.propName] = ops.value;
-	  }
-	  Post.update({ _id: id }, { $set: updateOps })
+	  }*/
+
+	  /*Post.findById(id)
+	  .exec()
+	  .then(findPost => {
+	  	findPost.set({title: req.body.title, texto: req.body.texto})
+	  	findPost.save()
+	  	.then(savePost => {
+	  		res.status(200).json({
+
+	  		});
+	  	})
+	  	.catch()
+	  })
+	  .catch() */
+
+	  Post.update({ _id: id }, { $set: {title: req.body.title, texto: req.body.texto} })
 	    .exec()
 	    .then(result => {
 	      res.status(200).json({
@@ -113,7 +136,7 @@ router.patch("/:id", CheckAuth.checkPostOwnerShip, (req, res, next) =>{
 	      res.status(500).json({
 	        error: err
 	      });
-	    });
+	    }); 
 });
 
 //DELETE
@@ -126,7 +149,7 @@ router.delete("/:id", CheckAuth.checkPostOwnerShip, (req, res, next)=>{
 		Comment.remove({postId: result._id})
 		.then(deleteComments => {
 			res.status(200).json({
-				message: "comentarios borrados"
+				_id: result._id
 			});
 		})
 	})
@@ -136,5 +159,6 @@ router.delete("/:id", CheckAuth.checkPostOwnerShip, (req, res, next)=>{
 		})
 	})
 })
+
 
 module.exports = router;

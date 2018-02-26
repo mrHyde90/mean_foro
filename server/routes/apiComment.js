@@ -6,14 +6,26 @@ const CheckAuth = require("../middleware/check-auth");
 
 //INDEX
 router.get("/", (req, res, next)=>{
-	console.log("pasa por aqui");
-	Comment.find({}, function(err, comments){
-		if(err) {
-			console.log(err);
-		} else {
-			res.status(200).json(comments);
-		}
-	});
+	//te devuelve todos los posts no solo de uno
+	//arreglarlo
+	Comment.find({})
+	.exec()
+	.then(comments => {
+		const newComments = comments.map(foundComment => {
+			return{
+				_id: foundComments._id,
+				text: foundComments.text,
+				created_at: foundComments.created_at,
+				author: foundComments.author
+			};
+		});
+		res.status(200).json(newComments);
+	})
+	.catch(err => {
+		res.status(500).json({
+			error: err
+		});
+	})
 });
 
 //POST
@@ -36,6 +48,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 			foundPost.save();
 			res.status(201).json({
 				_id: comment._id,
+				created_at: comment.created_at,
 				text: comment.text,
 				author: comment.author
 			});
@@ -69,6 +82,21 @@ router.get("/:commentId", (req, res, next) => {
 });
 
 //UPDATE
+router.patch("/:commentId",CheckAuth.checkCommentOwnerShip, (req, res, next) =>{
+	const id = req.params.commentId;
+	Comment.update({_id: id}, {$set: {text: req.body.text}})
+	.exec()
+	.then(result => {
+		res.status(200).json({
+			message: "Comment updated"
+		});
+	})
+	.catch(err => {
+		res.status(500).json({
+			error: err
+		});
+	})
+})
 
 
 //DELETE

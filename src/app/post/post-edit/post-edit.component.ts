@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import {NgForm} from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import {PostModel} from '../post-model';
 import {PostService} from '../post.service';
-import {PostStorageService} from "../post-storage.service";
+import {PostStorageService} from '../post-storage.service';
 
 @Component({
   selector: 'app-post-edit',
@@ -11,28 +11,58 @@ import {PostStorageService} from "../post-storage.service";
   styleUrls: ['./post-edit.component.css']
 })
 export class PostEditComponent implements OnInit {
-	@ViewChild('f') signupForm: NgForm;
-	submitted = false;
+	postForm: FormGroup;
+  id: string;
+  editable = false;
 	
 
   constructor(private postStorageService: PostStorageService,
               private postService: PostService,
-              private router: Router) { }
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+    
+    this.route.params.subscribe((params: Params) => {
+      this.id = params["id"];
+      this.editable = params["id"] != null;
+      this.initform();
+    }); 
+  }
+
+   initform() {
+    let postTitle = "";
+    let postTexto = "";
+    if(this.editable){
+      const post = this.postService.getPost(this.id);
+      postTitle = post.title;
+      postTexto = post.texto;
+    }
+    this.postForm = new FormGroup({
+      'title': new FormControl(postTitle, Validators.required),
+      'texto': new FormControl(postTexto, Validators.required)
+    });
   }
 
   onSubmit() {
-  	this.submitted = true;
-  	const post = {
-      title: this.signupForm.value.title,
-      text: this.signupForm.value.texto
+    const post = {
+      title: this.postForm.value.title,
+      texto: this.postForm.value.texto
     };
-  	this.postStorageService.createPost(post)
-      .subscribe((newPost: PostModel) => {
-        this.postService.addPost(newPost);
-      this.router.navigate(["/post"]);
-    });;
+
+    if(this.editable) {
+      this.postStorageService.updatePost(this.id, post).subscribe((message: string) => {
+        console.log(message);
+        this.postService.updatePost(post, this.id);
+        this.router.navigate(["/post"]); 
+      }); 
+    } else{
+      this.postStorageService.createPost(post)
+        .subscribe((newPost: PostModel) => {
+          this.postService.addPost(newPost);
+        this.router.navigate(["/post"]);
+      });
+    }
   }
 
 }
