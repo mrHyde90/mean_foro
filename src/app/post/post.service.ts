@@ -29,6 +29,14 @@ export class PostService {
     this.posts[findIndex].comments.push(comment);
   }
 
+  //DELETE COMMENT
+
+  //UPDATE COMMENT
+
+  //INDEX POST-COMMENT
+
+  //FINDINDEX COMMENT
+
   //CREATE
   addPost(newPost: PostModel) {
   	this.posts.push(newPost);
@@ -44,6 +52,7 @@ export class PostService {
     const findIndex = this.findIndexPost(index);
   	this.posts[findIndex].title = updatePost.title;
     this.posts[findIndex].texto = updatePost.texto;
+    this.posts[findIndex].categories = updatePost.categories;
   }
 
 }

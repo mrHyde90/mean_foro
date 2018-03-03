@@ -15,8 +15,13 @@
 	align-items: stretch;
 }
 
+.postItemFecha {
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 10px;
+	margin: 2px;
+}
+
 .header {
-	border-bottom: 2px solid black;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -26,4 +31,18 @@
 .comments {
 	padding: 5px;
 	border-top: 3px solid black;
+}
+
+.categorias {
+	display: flex;
+	flex-direction: row;
+	padding: 2px 0;
+	justify-content: flex-start;
+	border-bottom: 2px solid black;
+}
+
+.categoria {
+	font-size: 14px;
+	color: black;
+	margin-left: 8px;
 }

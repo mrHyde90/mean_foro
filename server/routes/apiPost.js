@@ -25,6 +25,7 @@ router.get("/", function(req, res){
 				_id: foundPost._id,
 				title: foundPost.title,
 				texto: foundPost.texto,
+				categories: foundPost.categories,
 				created_at: foundPost.created_at,
 				author: foundPost.author,
 				comments: comentarios
@@ -43,8 +44,13 @@ router.get("/", function(req, res){
 router.post("/", CheckAuth.checkAuth, function(req, res){
 	console.log(req.body);
 	console.log(req.userData);
+	let newCategories = req.body.categories;
+	if(!newCategories){
+		newCategories = ["Ninguna"];
+	}
 	var newPost = new Post({
 		title: req.body.title,
+		categories: newCategories,
 		texto: req.body.texto,
 		author: {
 			id: req.userData.userId,
@@ -56,6 +62,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 		res.status(201).json({
 			_id: post._id,
 			title: post.title,
+			categories: post.categories,
 			texto: post.texto,
 			created_at: post.created_at,
 			author: post.author,
@@ -80,6 +87,7 @@ router.get("/:id", function(req, res){
 		const newComments = foundPost.comments.map(newComment => {
 			return {
 				_id: newComment._id,
+				created_at: newComment.created_at,
 				text: newComment.text,
 				author: newComment.author.username
 			};
@@ -88,6 +96,7 @@ router.get("/:id", function(req, res){
 			_id: foundPost._id,
 			title: foundPost.title,
 			texto: foundPost.texto,
+			categories: foundPost.categories,
 			created_at: foundPost.created_at,
 			author: foundPost.author.username,
 			comments: newComments
@@ -124,7 +133,7 @@ router.patch("/:id", CheckAuth.checkPostOwnerShip, (req, res, next) =>{
 	  })
 	  .catch() */
 
-	  Post.update({ _id: id }, { $set: {title: req.body.title, texto: req.body.texto} })
+	  Post.update({ _id: id }, { $set: {title: req.body.title, texto: req.body.texto, categories: req.body.categories} })
 	    .exec()
 	    .then(result => {
 	      res.status(200).json({

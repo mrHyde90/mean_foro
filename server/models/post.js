@@ -5,8 +5,7 @@ var postSchema = new mongoose.Schema({
 	texto: {type: String },
 	created_at: { type: Date, default: Date.now },
 	categories: [{type: String, 
-		enum: ["Tecnologia", "Salud", "Ninguna", "Cultura", "Miedo", "Amor", "Politica", "Geek", "Musica", "Deportes"], 
-		default: ["Ninguna"]}],
+		enum: ["Tecnologia", "Salud", "Ninguna", "Cultura", "Miedo", "Amor", "Politica", "Geek", "Musica", "Deportes"]}],
 	author: {
 		id: {
 			type: mongoose.Schema.Types.ObjectId,

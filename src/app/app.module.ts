@@ -24,6 +24,7 @@ import {DropdownDirective} from './shared/dropdown.directive';
 import { UserComponent } from './user/user.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ShortenPipe } from './shared/shorten.pipe';
+import { CategoryItemComponent } from './shared/category-item/category-item.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ShortenPipe } from './shared/shorten.pipe';
     DropdownDirective,
     UserComponent,
     ErrorPageComponent,
-    ShortenPipe
+    ShortenPipe,
+    CategoryItemComponent
   ],
   imports: [
     BrowserModule,

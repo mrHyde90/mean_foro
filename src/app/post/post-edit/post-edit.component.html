@@ -20,6 +20,29 @@
 					></textarea>
 				</div>
 
+				<div formArrayName="categories" >
+		          <h4>Your Categories</h4>
+		          
+				    <div class="panel panel-default">
+					  <!-- Default panel contents -->
+					  <div class="panel-heading">Choose Categories (Maximum 5)</div>
+					  <div class="panel-body">
+					    <app-category-item *ngFor="let category of posiblesCategorias" [cItem]="category" (cCreated)="onAddCategory($event)"></app-category-item>
+					  </div>
+					</div>
+
+		          <div 
+		            class="form-group"
+		            *ngFor="let categoryControl of postForm.get('categories').controls; let i = index" >
+					<p>{{categoryControl.value}}</p>
+					<button 
+			          class="btn btn-default" 
+			          type="button"
+			          (click)="onDeleteCategory(i)" >Delete Category</button>
+
+		          </div>
+		        </div>
+
 				<button 
 	          class="btn btn-primary" 
 	          type="submit"

@@ -6,19 +6,18 @@ const CheckAuth = require("../middleware/check-auth");
 
 //INDEX
 router.get("/", (req, res, next)=>{
-	//te devuelve todos los posts no solo de uno
-	//arreglarlo
-	Comment.find({})
+	const id = req.params.id;
+	Comment.find({postId: id})
 	.exec()
 	.then(comments => {
 		const newComments = comments.map(foundComment => {
 			return{
-				_id: foundComments._id,
-				text: foundComments.text,
-				created_at: foundComments.created_at,
-				author: foundComments.author
+				_id: foundComment._id,
+				text: foundComment.text,
+				created_at: foundComment.created_at,
+				author: foundComment.author
 			};
-		});
+		}); 
 		res.status(200).json(newComments);
 	})
 	.catch(err => {
@@ -66,7 +65,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 	}); 
 });
 
-//SHOW
+//SHOW, no lo ocupo
 router.get("/:commentId", (req, res, next) => {
 	const id = req.params.commentId;
 	Comment.findById({_id: id})
@@ -81,7 +80,7 @@ router.get("/:commentId", (req, res, next) => {
 	});
 });
 
-//UPDATE
+//UPDATE, actualizar en el front 
 router.patch("/:commentId",CheckAuth.checkCommentOwnerShip, (req, res, next) =>{
 	const id = req.params.commentId;
 	Comment.update({_id: id}, {$set: {text: req.body.text}})
@@ -99,7 +98,7 @@ router.patch("/:commentId",CheckAuth.checkCommentOwnerShip, (req, res, next) =>{
 })
 
 
-//DELETE
+//DELETE, eliminarr el el front
 router.delete("/:commentId", CheckAuth.checkCommentOwnerShip, (req, res, next) => {
 	var id = req.params.commentId;
 	Comment.remove({ _id: id})

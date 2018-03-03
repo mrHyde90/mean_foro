@@ -8,4 +8,9 @@
 	</div>
 	<h3 class="postItemFecha">{{postItem.created_at | date:'medium'}}</h3>
 	<p class="postItemTexto">{{postItem.texto | shorten:80}}</p>
+	<div class="categoryList">
+		<div class="categoryItem" *ngFor="let category of postItem.categories">
+			<p class="category">{{category}}</p>
+		</div>
+	</div>
 </a>
