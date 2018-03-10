@@ -25,7 +25,11 @@ import { UserComponent } from './user/user.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { ShortenPipe } from './shared/shorten.pipe';
 import { CategoryItemComponent } from './shared/category-item/category-item.component';
-
+import { CommentComponent } from './comment/comment.component';
+import { CommentListComponent } from './comment/comment-list/comment-list.component';
+import { CommentCreateComponent } from './comment/comment-create/comment-create.component';
+import {CommentService} from './comment/comment.service';
+import { CommentItemComponent } from './comment/comment-list/comment-item/comment-item.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,7 +46,11 @@ import { CategoryItemComponent } from './shared/category-item/category-item.comp
     UserComponent,
     ErrorPageComponent,
     ShortenPipe,
-    CategoryItemComponent
+    CategoryItemComponent,
+    CommentComponent,
+    CommentListComponent,
+    CommentCreateComponent,
+    CommentItemComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +59,7 @@ import { CategoryItemComponent } from './shared/category-item/category-item.comp
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [PostStorageService, PostService, AuthService, UserService],
+  providers: [PostStorageService, PostService, AuthService, UserService, CommentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

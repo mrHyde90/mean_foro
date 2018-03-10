@@ -65,20 +65,29 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 	}); 
 });
 
-//SHOW, no lo ocupo
-router.get("/:commentId", (req, res, next) => {
-	const id = req.params.commentId;
-	Comment.findById({_id: id})
+//INDEX-POST, 
+router.get("/indexpost", (req, res, next) => {
+	const id = req.params.id;
+	Post.findById(id)
+	.populate("comments")
 	.exec()
-	.then(result => {
-		res.status(200).json(result);
+	.then(post => {
+		const comentarios = post.comments.map(foundComments => {
+			return {
+				_id: foundComments._id,
+				text: foundComments.text,
+				created_at: foundComments.created_at,
+				author: foundComments.author
+			};
+		});
+		res.status(200).json(comentarios)
 	})
 	.catch(err => {
-		res.status(500).json({
+		res.status(200).json({
 			error: err
 		});
-	});
-});
+	})
+})
 
 //UPDATE, actualizar en el front 
 router.patch("/:commentId",CheckAuth.checkCommentOwnerShip, (req, res, next) =>{

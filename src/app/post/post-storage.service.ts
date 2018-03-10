@@ -61,24 +61,4 @@ export class PostStorageService {
     });
   }
 
-  //CREATE COMMENT, /api/post/:id/comment
-  createComment(index: string, text: string) {
-    const token = this.authService.getToken();
-    const headers = new Headers({'authorization': `bearer ${token}`});
-    return this.http.post(`${this.contactUrl}/${index}/comment`, {text: text}, {headers: headers}).map((res:Response) => {
-      const newComment: Comment = res.json();
-      return newComment;
-    });
-  }
-
-  //DELETE COMMENT, /api/post/:idPost/comment/:idComment
-  deleteComment(indexPost: string, indexComment: string){
-    const token = this.authService.getToken();
-    const headers = new Headers({'authorization': `bearer ${token}`});
-    return this.http.delete(`${this.contactUrl}/${indexPost}/comment/${indexComment}`, {headers: headers}).map((res: Response) => {
-      const message: string = res.json();
-      return message;
-    });
-  }
-
 }

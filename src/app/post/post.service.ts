@@ -22,21 +22,6 @@ export class PostService {
   	return this.posts[findIndex];
   }
 
-  //ADD COMMENT
-  addComment(index: string, comment: Comment) {
-    const findIndex = this.findIndexPost(index);
-    console.log("estas agregando un comentario");
-    this.posts[findIndex].comments.push(comment);
-  }
-
-  //DELETE COMMENT
-
-  //UPDATE COMMENT
-
-  //INDEX POST-COMMENT
-
-  //FINDINDEX COMMENT
-
   //CREATE
   addPost(newPost: PostModel) {
   	this.posts.push(newPost);

@@ -1,0 +1,17 @@
+<div>
+	<p>{{comment.author.username}}</p>
+		<p>{{comment.text}}</p>
+
+		<ng-template [ngIf]="sameCommentUser()">
+			<button 
+	          class="btn btn-primary" 
+	          type="submit"
+	          (click)="onDeleteComment()" >Delete</button>
+
+			<button 
+		        class="btn btn-primary" 
+		        type="submit"
+		        (click)="onEditComment()" >Edit</button>		
+		</ng-template>
+
+</div>

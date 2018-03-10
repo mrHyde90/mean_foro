@@ -1,0 +1,15 @@
+<div class="formulario" *ngIf="authService.isAuthenticated()">
+	<form (ngSubmit)="onSubmitComment(f)" #f="ngForm">
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea class="form-control" 
+            			name="text" 
+            			id="content" 
+            			cols="30" 
+            			rows="4" 
+            			[ngModel]="comment?.text" 
+            			required ></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+</div>

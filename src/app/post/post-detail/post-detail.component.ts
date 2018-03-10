@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import {Comment} from '../comment-model';
+
 import {PostModel} from '../post-model';
 import {PostService} from '../post.service';
 import {PostStorageService} from '../post-storage.service';
@@ -15,7 +15,7 @@ import {UserService} from '../../shared/user.service';
 })
 export class PostDetailComponent implements OnInit {
 	post: PostModel;
-  comment: string;
+  showComments = false;
 	id: string;
   user:UserModel;
 
@@ -38,15 +38,6 @@ export class PostDetailComponent implements OnInit {
   		});
   }
 
-  addComment() {
-    this.postStorageService.createComment(this.id, this.comment).subscribe(
-      (newComment: Comment) => {
-        this.postService.addComment(this.id, newComment);
-        this.comment = "";
-      }
-    );
-  }
-
   samePostUser(){
     console.log("Gola man");
     if(this.authService.isAuthenticated()){
@@ -57,6 +48,10 @@ export class PostDetailComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  onShowComments(){
+    this.showComments = !this.showComments;
   }
 
   onEditPost(){

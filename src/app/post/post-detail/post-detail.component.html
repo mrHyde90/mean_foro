@@ -20,14 +20,16 @@
 		<button class="btn btn-danger" (click)="onDeletePost()">Delete</button>
 	</ng-template>
 
-	<div class="comments">
-		<div class="comment" *ngFor="let comment of post.comments">
-			<p>{{comment.author.username}}</p>
-			<p>{{comment.text}}</p>
-		</div>
-	</div>
-	<div class="formulario" *ngIf="authService.isAuthenticated()">
-			<textarea name="text" id="" cols="30" rows="4" [(ngModel)]="comment" ></textarea>
-	</div>
 </div>
-<button class="btn btn-success" (click)="addComment()" *ngIf="authService.isAuthenticated()">Add comment</button>
+
+<button class="btn btn-default" (click)="onShowComments()" >{{showComments? "Ocultar Comentarios" : "Mostrar Comentarios"}}</button>
+<div *ngIf="showComments">
+	<app-comment></app-comment>
+</div>
+
+<!-- 
+	<div *ngIf="authService.isAuthenticated()">
+		<button class="btn btn-default" (click)="onEditPost()" >Edit</button>
+		<button class="btn btn-danger" (click)="onDeletePost()">Delete</button>
+	</div>
+-->
