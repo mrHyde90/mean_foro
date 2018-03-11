@@ -20,7 +20,7 @@ router.post("/signup", (req, res, next)=> {
 			bcrypt.hash(req.body.password, 10, (err, hash) => {
 				if(err) {
 					return res.status(500).json({
-						error: err
+						message: "password no pudo ser encriptado"
 					});
 				} else {
 					//creamos el nuevo usuario con el password encryptado
@@ -56,7 +56,7 @@ router.post("/signup", (req, res, next)=> {
 					})
 					.catch(err => {
 						res.status(500).json({
-							error: err
+							message: "usuario no pudo ser salvado"
 						});
 					});
 				}
@@ -76,7 +76,7 @@ router.get("/", function(req, res, next){
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "Usuarios no encontrados"
 		});
 	})
 });
@@ -96,7 +96,7 @@ router.get("/:id",(req, res, next) => {
 	})
 	.catch(err => {
 		res.status(500).json({
-			error : err
+			message : "usuario no encontrado"
 		})
 	})
 })
@@ -149,7 +149,7 @@ router.post("/login", (req, res, next)=>{
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "Email no encontrado"
 		});
 	});
 })
@@ -175,19 +175,19 @@ router.delete("/:userId", CheckAuth.checkAuth, (req, res, next) => {
 			})
 			.catch(err => {
 				res.status(500).json({
-					error: err
+					message: "Comentario no puede ser removido"
 				})
 			})
 		})
 		.catch(err => {
 			res.status(500).json({
-				error: err
+				message: "Post no puede ser removido"
 			})
 		})
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "Usuario no puede ser removido"
 		});
 	});
 })

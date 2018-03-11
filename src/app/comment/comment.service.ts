@@ -3,7 +3,10 @@ import { Subject } from 'rxjs/Subject';
 import {Comment} from '../post/comment-model';
 import { Http, Response, Headers } from '@angular/http';
 import {AuthService} from '../auth/auth.service';
+import { ErrorService } from "../error/error.service";
+import { Observable } from "rxjs";
 import 'rxjs/Rx';
+
 @Injectable()
 export class CommentService{
 	private comments: Comment[] = [];
@@ -13,7 +16,8 @@ export class CommentService{
 	private contactUrl = "/api/post";
 
   constructor(private http:Http, 
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private errorService: ErrorService) { }
 
   findIndexComment(index: string) {
     const findIndex = this.comments.findIndex(comment => {
@@ -29,6 +33,10 @@ export class CommentService{
       console.log(this.comments);
   		return this.comments.slice();
   	})
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
+    });
   }
 
 	//CREATE COMMENT, /api/post/:id/comment
@@ -40,6 +48,10 @@ export class CommentService{
       this.comments.push(newComment);
       this.commentChanged.next(this.comments.slice());
       return newComment;
+    })
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
     });
   }
 
@@ -58,6 +70,10 @@ export class CommentService{
     	this.comments[indexFound].text = text;
     	this.commentChanged.next(this.comments.slice());
     	return message;
+    })
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
     });
   }
 
@@ -67,10 +83,17 @@ export class CommentService{
     const headers = new Headers({'authorization': `bearer ${token}`});
     return this.http.delete(`${this.contactUrl}/generico/comment/${indexComment}`, {headers: headers}).map((res: Response) => {
       const message: string = res.json();
+      console.log("en el map");
       const indexFound = this.findIndexComment(indexComment);
       this.comments.splice(indexFound, 1);
       this.commentChanged.next(this.comments.slice());
       return message;
+    })
+    .catch((error: Response) => {
+      console.log("En el catch");
+      this.errorService.handleError(error.json());
+      
+      return Observable.throw(error.json().message);
     });
   }
 	

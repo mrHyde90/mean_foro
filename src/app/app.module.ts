@@ -30,6 +30,8 @@ import { CommentListComponent } from './comment/comment-list/comment-list.compon
 import { CommentCreateComponent } from './comment/comment-create/comment-create.component';
 import {CommentService} from './comment/comment.service';
 import { CommentItemComponent } from './comment/comment-list/comment-item/comment-item.component';
+import { ErrorComponent } from './error/error.component';
+import {ErrorService} from './error/error.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +52,8 @@ import { CommentItemComponent } from './comment/comment-list/comment-item/commen
     CommentComponent,
     CommentListComponent,
     CommentCreateComponent,
-    CommentItemComponent
+    CommentItemComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,7 @@ import { CommentItemComponent } from './comment/comment-list/comment-item/commen
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [PostStorageService, PostService, AuthService, UserService, CommentService],
+  providers: [PostStorageService, PostService, AuthService, UserService, CommentService, ErrorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

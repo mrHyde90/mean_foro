@@ -59,9 +59,10 @@ export class PostDetailComponent implements OnInit {
   }
 
   onDeletePost(){
-    this.postStorageService.deletePost(this.id).subscribe((_id: string) => {
-      console.log(_id);
-      this.router.navigate(['/post']);
-    });
+    this.postStorageService.deletePost(this.id)
+      .subscribe(
+        (_id: string) => this.router.navigate(['/post']),
+        error => console.log(error)
+      );
   }
 }

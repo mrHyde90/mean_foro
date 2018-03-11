@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
 import {UserService} from '../shared/user.service';
+import { ErrorService } from "../error/error.service";
 import 'rxjs/Rx';
-
+import { Observable } from "rxjs";
 @Injectable()
 export class AuthService {
 	token: string;
@@ -18,30 +19,47 @@ export class AuthService {
 
   constructor(private http: Http,
               private userService: UserService,
-              private router: Router) { }
+              private router: Router,
+              private errorService: ErrorService) { }
 
   signupUser(user: {email:string, username: string, password: string}){
   	this.http.post(this.contactUrl + "signup", user).map((res: Response) => {
   		const newToken = res.json();
   		return newToken;
-  	}).subscribe((token: any)=>{
-  		this.token = token.token;
-      this.userService.setUser(token.user);
-  		console.log(token);
-      this.router.navigate(['/']);
-  	});
+  	})
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
+    })
+    .subscribe(
+      (token: any)=>{
+    		this.token = token.token;
+        this.userService.setUser(token.user);
+    		console.log(token);
+        this.router.navigate(['/']);
+  	  },
+      error => console.log(error)
+    );
   }
 
   signinUser(user: {email:string, password: string}){
   	this.http.post(this.contactUrl + "login", user).map((res: Response) => {
   		const newToken = res.json();
   		return newToken;
-  	}).subscribe((token: any) => {
-  		this.token = token.token;
-      this.userService.setUser(token.user);
-  		console.log(token);
-      this.router.navigate(['/']);
-  	});
+  	})
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
+    })
+    .subscribe(
+      (token: any) => {
+  		  this.token = token.token;
+        this.userService.setUser(token.user);
+  		  console.log(token);
+        this.router.navigate(['/']);
+  	  },
+      error => console.log(error)
+    );
   }
 
   logout() {

@@ -1,5 +1,6 @@
-<div>
+<div class="commentItem">
 	<p>{{comment.author.username}}</p>
+	<p>{{comment.created_at | date:'medium'}}</p>
 		<p>{{comment.text}}</p>
 
 		<ng-template [ngIf]="sameCommentUser()">
@@ -11,7 +12,12 @@
 			<button 
 		        class="btn btn-primary" 
 		        type="submit"
-		        (click)="onEditComment()" >Edit</button>		
-		</ng-template>
+		        (click)="onEditComment()" >Edit</button>
+		</ng-template>		
+		
 
 </div>
+<!-- 
+	
+		
+-->

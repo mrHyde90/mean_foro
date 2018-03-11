@@ -12,7 +12,7 @@ exports.checkAuth = (req, res, next) => {
         next();
     } catch (error) {
         return res.status(401).json({
-            message: 'Auth failed camarada'
+            message: "Auth Failed"
         });
     }
 };
@@ -36,14 +36,15 @@ exports.checkPostOwnerShip = (req, res, next) => {
         })
         .catch(err => {
             res.status(500).json({
-                error: err
+                message: "El id no existe"
             });
         });
     } catch(error) {
         return res.status(401).json({
-            message: 'Auth failed'
+            message: "Hubo un error en los parametros"
         });
     }
+
 };
 
 exports.checkCommentOwnerShip = (req, res, next) => {
@@ -53,7 +54,7 @@ exports.checkCommentOwnerShip = (req, res, next) => {
         req.userData = decoded;
     } catch(error) {
         return res.status(401).json({
-            message: 'Auth failed camarada'
+            message: "Auth Failed"
         });
     }
     const commentId = req.params.commentId;

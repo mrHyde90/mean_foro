@@ -29,11 +29,11 @@ export class CommentItemComponent implements OnInit {
   }
 
   onDeleteComment() {
-  	this.commentService.deleteComment(this.comment._id).subscribe(
-  		(message: string) => {
-  			console.log(message);
-  		}
-  	);
+  	this.commentService.deleteComment(this.comment._id)
+    .subscribe(
+      result => console.log(result),
+      error => console.log(error)
+    );
   }
 
   sameCommentUser() {

@@ -22,7 +22,7 @@ router.get("/", (req, res, next)=>{
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "Comentario no encontrado"
 		});
 	})
 });
@@ -54,13 +54,13 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 		})
 		.catch(err => {
 			res.status(500).json({
-				error: err
+				message: "Comentario no pudo ser salvado"
 			});
 		});
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "El post no fue encontrado"
 		});
 	}); 
 });
@@ -84,7 +84,7 @@ router.get("/indexpost", (req, res, next) => {
 	})
 	.catch(err => {
 		res.status(200).json({
-			error: err
+			message: "El post no pudo ser encontrado"
 		});
 	})
 })
@@ -101,7 +101,7 @@ router.patch("/:commentId",CheckAuth.checkCommentOwnerShip, (req, res, next) =>{
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "El comentario no pudo ser actualizado"
 		});
 	})
 })
@@ -119,7 +119,7 @@ router.delete("/:commentId", CheckAuth.checkCommentOwnerShip, (req, res, next) =
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "Cmentario no pudo ser eliminado"
 		});
 	});
 });

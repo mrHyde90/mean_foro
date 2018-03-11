@@ -81,19 +81,26 @@ export class PostEditComponent implements OnInit {
     };
 
     if(this.editable) {
-      this.postStorageService.updatePost(this.id, post).subscribe((message: string) => {
-        console.log(message);
-        this.postService.updatePost(post, this.id);
-        this.postForm.reset();
-        this.router.navigate(["/post"]); 
-      }); 
+      this.postStorageService.updatePost(this.id, post)
+        .subscribe(
+          (message: string) => {
+            console.log(message);
+            this.postService.updatePost(post, this.id);
+            this.postForm.reset();
+            this.router.navigate(["/post"]); 
+          }, 
+          error => console.log(error)
+        ); 
     } else{
       this.postStorageService.createPost(post)
-        .subscribe((newPost: PostModel) => {
-          this.postService.addPost(newPost);
-          this.postForm.reset();
-        this.router.navigate(["/post"]);
-      });
+        .subscribe(
+          (newPost: PostModel) => {
+            this.postService.addPost(newPost);
+            this.postForm.reset();
+            this.router.navigate(["/post"]);
+          },
+          error => console.log(error)
+        );
     } 
   }
 

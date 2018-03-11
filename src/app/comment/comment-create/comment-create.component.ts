@@ -30,20 +30,19 @@ export class CommentCreateComponent implements OnInit {
   onSubmitComment(form: NgForm) {
   	if(this.comment) {
   		//EDIT
-  		this.commentService.updateComment(this.id, this.comment._id, form.value.text).subscribe(
-  			(message: string) => {
-  				console.log(message);
-  				this.comment = null;
-  			}
-  		);
+  		this.commentService.updateComment(this.id, this.comment._id, form.value.text)
+      .subscribe(
+        result => console.log(result),
+        error => console.log(error)
+      );
+      this.comment = null;
   	} else {
   		//CREATE
-  		this.commentService.createComment(this.id, form.value.text).subscribe(
-  			(newComment: Comment) => {
-  				console.log("Comentario creado exitosamente");
-  				console.log(newComment);
-  			}
-  		);
+  		this.commentService.createComment(this.id, form.value.text)
+      .subscribe(
+        data => console.log(data),
+        error => console.log(error)
+      );
   	}
   	form.resetForm();
   }

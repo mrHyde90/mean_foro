@@ -28,10 +28,13 @@ export class CommentListComponent implements OnInit, OnDestroy {
   		});
 
   	this.commentService.indexPostComment(this.id)
-  		.subscribe((comments: Comment[]) => {
-  			console.log("Segundo");
-  			this.comments = comments.reverse();
-  		});
+  		.subscribe(
+        (comments: Comment[]) => {
+  			  console.log("Segundo");
+  			  this.comments = comments.reverse();
+  		  },
+        error => console.log(error)
+      );
 
   	this.subscription = this.commentService.commentChanged
   		.subscribe((comments: Comment[]) => {
@@ -47,9 +50,6 @@ export class CommentListComponent implements OnInit, OnDestroy {
 }
 
 /*
-   Estilizar los comentarios
-   sort la lista de comentarios
-   poner los errores
    poner el loading
    poner el usuario en el localStorage
    estilizar el profile

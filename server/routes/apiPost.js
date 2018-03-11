@@ -37,7 +37,7 @@ router.get("/", function(req, res){
 	})
 	.catch(err => {
 		res.status(500).json({
-			error: err
+			message: "Los post no pudieron ser encontrados"
 		});
 	})
 });
@@ -47,7 +47,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 	console.log(req.body);
 	console.log(req.userData);
 	let newCategories = req.body.categories;
-	if(!newCategories){
+	if(!newCategories || newCategories.length < 1){
 		newCategories = ["Ninguna"];
 	}
 	var newPost = new Post({
@@ -74,7 +74,7 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 	.catch(err => {
 		console.log("no se pudo mi rey");
 		res.status(500).json({
-			error: err
+			message: "El post no pudo ser creado"
 		});
 	});
 });
@@ -105,7 +105,7 @@ router.get("/:id", function(req, res){
 		});
 	})
 	.catch(err => {
-		res.status(500).json({error: err});
+		res.status(500).json({message: "Post no pudo ser encontrado"});
 	});
 });
 
@@ -145,7 +145,7 @@ router.patch("/:id", CheckAuth.checkPostOwnerShip, (req, res, next) =>{
 	    .catch(err => {
 	      console.log(err);
 	      res.status(500).json({
-	        error: err
+	        message: "post no puede ser actualizado"
 	      });
 	    }); 
 });
@@ -163,10 +163,15 @@ router.delete("/:id", CheckAuth.checkPostOwnerShip, (req, res, next)=>{
 				_id: result._id
 			});
 		})
+		.catch(err => {
+			res.status(500).json({
+				message: "El comentario del post no puede ser borrado"
+			});
+		});
 	})
 	.catch(err => {
 		res.status(500).json({
-			message: "Error"
+			message: "El post no puede ser borrado"
 		})
 	})
 })

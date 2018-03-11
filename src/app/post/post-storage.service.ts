@@ -4,6 +4,8 @@ import {PostModel} from './post-model';
 import {Comment} from './comment-model';
 import {PostService} from './post.service';
 import {AuthService} from '../auth/auth.service';
+import { ErrorService } from "../error/error.service";
+import { Observable } from "rxjs";
 import 'rxjs/Rx';
 
 //crear post.service, donde se encuentre los post , el crud 
@@ -15,7 +17,8 @@ export class PostStorageService {
 
   constructor(private http:Http, 
               private postService: PostService,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private errorService: ErrorService) { }
 
   //INDEX, /api/post
   getPosts(){
@@ -28,7 +31,11 @@ export class PostStorageService {
       }
       this.postService.setPosts(allPosts);
   		return allPosts;
-  	});
+  	})
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
+    });
   }
 
   //CREATE POST, api/post/
@@ -38,6 +45,10 @@ export class PostStorageService {
     return this.http.post(this.contactUrl, newPost, {headers: headers}).map((res:Response) => {
       const post: PostModel = res.json();
       return post;
+    })
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
     });
   }
 
@@ -48,7 +59,11 @@ export class PostStorageService {
     return this.http.patch(`${this.contactUrl}/${index}`, updatePost, {headers: headers}).map((res:Response)=>{
         const mensaje:string = res.json();
         return mensaje;
-    });  
+    })
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
+    }); 
   }
 
   //DELETE POST, api/post/:id
@@ -58,6 +73,10 @@ export class PostStorageService {
     return this.http.delete(`${this.contactUrl}/${index}`, {headers: headers}).map((res: Response) => {
       const _id: string = res.json();
       return _id;
+    })
+    .catch((error: Response) => {
+      this.errorService.handleError(error.json());
+      return Observable.throw(error.json().message);
     });
   }
 
