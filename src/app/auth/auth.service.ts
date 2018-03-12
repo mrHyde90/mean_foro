@@ -5,6 +5,7 @@ import {UserService} from '../shared/user.service';
 import { ErrorService } from "../error/error.service";
 import 'rxjs/Rx';
 import { Observable } from "rxjs";
+import {LoaderService} from '../loader/loader.service';
 @Injectable()
 export class AuthService {
 	token: string;
@@ -20,14 +21,18 @@ export class AuthService {
   constructor(private http: Http,
               private userService: UserService,
               private router: Router,
-              private errorService: ErrorService) { }
+              private errorService: ErrorService,
+              private loaderService: LoaderService) { }
 
   signupUser(user: {email:string, username: string, password: string}){
+    this.loaderService.handleLoader(true);
   	this.http.post(this.contactUrl + "signup", user).map((res: Response) => {
+      this.loaderService.handleLoader(false);
   		const newToken = res.json();
   		return newToken;
   	})
     .catch((error: Response) => {
+      this.loaderService.handleLoader(false);
       this.errorService.handleError(error.json());
       return Observable.throw(error.json().message);
     })
@@ -43,11 +48,14 @@ export class AuthService {
   }
 
   signinUser(user: {email:string, password: string}){
+    this.loaderService.handleLoader(true);
   	this.http.post(this.contactUrl + "login", user).map((res: Response) => {
+      this.loaderService.handleLoader(false);
   		const newToken = res.json();
   		return newToken;
   	})
     .catch((error: Response) => {
+      this.loaderService.handleLoader(false);
       this.errorService.handleError(error.json());
       return Observable.throw(error.json().message);
     })

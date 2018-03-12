@@ -21,7 +21,7 @@
 	</ng-template>
 
 </div>
-
+<app-loader></app-loader>
 <button class="btn btn-default" (click)="onShowComments()" >{{showComments? "Ocultar Comentarios" : "Mostrar Comentarios"}}</button>
 <div *ngIf="showComments">
 	<app-comment></app-comment>

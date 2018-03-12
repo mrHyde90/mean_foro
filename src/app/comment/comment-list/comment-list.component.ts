@@ -50,7 +50,6 @@ export class CommentListComponent implements OnInit, OnDestroy {
 }
 
 /*
-   poner el loading
    poner el usuario en el localStorage
    estilizar el profile
    poner los componentes del owner 

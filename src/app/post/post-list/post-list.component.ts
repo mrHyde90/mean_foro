@@ -18,7 +18,7 @@ export class PostListComponent implements OnInit{
                 private authService: AuthService) { }
 
   ngOnInit() {
-      this.postStorageService.getPosts()
+        this.postStorageService.getPosts()
         .subscribe(
           (posts: PostModel[]) => this.posts = posts,
           error => console.log(error)
