@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import {PostModel} from '../post-model';
-import {PostService} from '../post.service';
 import {PostStorageService} from '../post-storage.service';
 import {AuthService} from '../../auth/auth.service';
 import {UserModel} from '../../shared/user-model';
@@ -19,8 +18,7 @@ export class PostDetailComponent implements OnInit {
 	id: string;
   user:UserModel;
 
-  constructor(private postService: PostService, 
-  			  private router: Router, 
+  constructor(private router: Router, 
   			  private route: ActivatedRoute,
           private postStorageService: PostStorageService,
           private authService: AuthService,
@@ -34,7 +32,13 @@ export class PostDetailComponent implements OnInit {
   	this.route.params.subscribe(
   		(params: Params) => {
   			this.id = params["id"];
-  			this.post = this.postService.getPost(this.id);
+        console.log(this.id);
+  			this.postStorageService.showPost(this.id)
+          .subscribe((post:PostModel) => {
+            this.post = post;
+            console.log("Las categorias dentro del detail");
+            console.log(this.post.categories);
+          });
   		});
   }
 

@@ -83,25 +83,15 @@ router.post("/", CheckAuth.checkAuth, function(req, res){
 router.get("/:id", function(req, res){
 	console.log("Estas dentro del show");
 	Post.findById(req.params.id)
-	.populate("comments")
 	.exec()
 	.then(foundPost => {
-		const newComments = foundPost.comments.map(newComment => {
-			return {
-				_id: newComment._id,
-				created_at: newComment.created_at,
-				text: newComment.text,
-				author: newComment.author.username
-			};
-		});
 		res.status(200).json({
 			_id: foundPost._id,
 			title: foundPost.title,
 			texto: foundPost.texto,
 			categories: foundPost.categories,
 			created_at: foundPost.created_at,
-			author: foundPost.author.username,
-			comments: newComments
+			author: foundPost.author
 		});
 	})
 	.catch(err => {

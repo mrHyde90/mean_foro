@@ -17,10 +17,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   				private userService: UserService) { }
 
   ngOnInit() {
+    console.log(localStorage.getItem('user'));
+    console.log(JSON.parse(localStorage.getItem('user')));
+
   	this.subscription = this.userService.userChanged
       .subscribe((user: UserModel) => {
         this.user = user;
       });
+    this.userService.setUser(JSON.parse(localStorage.getItem('user')));
   }
 
   ngOnDestroy(){

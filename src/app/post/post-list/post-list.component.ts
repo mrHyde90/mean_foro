@@ -1,7 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import {PostModel} from '../post-model';
 import {PostStorageService} from '../post-storage.service';
-import {PostService} from '../post.service';
 import {AuthService} from '../../auth/auth.service';
 import 'rxjs/Rx';
 
@@ -13,8 +12,7 @@ import 'rxjs/Rx';
 export class PostListComponent implements OnInit{
   posts: PostModel[]; 
 
-  constructor( private postService: PostService, 
-                private postStorageService: PostStorageService,
+  constructor( private postStorageService: PostStorageService,
                 private authService: AuthService) { }
 
   ngOnInit() {

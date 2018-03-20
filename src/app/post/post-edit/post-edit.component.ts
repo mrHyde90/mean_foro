@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
 import {PostModel} from '../post-model';
-import {PostService} from '../post.service';
 import {PostStorageService} from '../post-storage.service';
 
 //continuar con el approach del formArray
@@ -13,6 +12,7 @@ import {PostStorageService} from '../post-storage.service';
   styleUrls: ['./post-edit.component.css']
 })
 export class PostEditComponent implements OnInit {
+  postal: PostModel;
 	postForm: FormGroup;
   id: string;
   editable = false;
@@ -20,7 +20,6 @@ export class PostEditComponent implements OnInit {
 	tengoCategorias: string[] = [];
 
   constructor(private postStorageService: PostStorageService,
-              private postService: PostService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -29,30 +28,37 @@ export class PostEditComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.id = params["id"];
       this.editable = params["id"] != null;
-      this.initform();
+      this.initCreateForm();
+      if(this.editable){
+        this.initEditableForm();
+      }
     }); 
   }
 
-   initform() {
-    let postTitle = "";
-    let postTexto = "";
-    let categories = [];
-    if(this.editable){
-      const post = this.postService.getPost(this.id);
-      postTitle = post.title;
-      postTexto = post.texto;
-      //recuerda el in en arreglos te devuelve el index (0, 1, 2)
-      //el in en objetos te devuelve la key ("Arroz")
-      for(let category of post.categories){
-        this.tengoCategorias.push(category);
-        const control = new FormControl(category, Validators.required);
-        categories.push(control);
-      }
-    }
+  initEditableForm(){
+    this.postStorageService.showPost(this.id)
+      .subscribe((post:PostModel) => {
+        let categories = [];
+        for(let category of post.categories){
+          this.tengoCategorias.push(category);
+          const control = new FormControl(category, Validators.required);
+          categories.push(control);
+        }
+        console.log("Iphone love");
+        console.log(post.title);
+        this.postForm = new FormGroup({
+          'title': new FormControl(post.title, Validators.required),
+          'texto': new FormControl(post.texto, Validators.required),
+          "categories": new FormArray(categories)
+        });
+      });
+  }
+
+  initCreateForm(){
     this.postForm = new FormGroup({
-      'title': new FormControl(postTitle, Validators.required),
-      'texto': new FormControl(postTexto, Validators.required),
-      "categories": new FormArray(categories)
+      'title': new FormControl("", Validators.required),
+      'texto': new FormControl("", Validators.required),
+      "categories": new FormArray([])
     });
   }
 
@@ -85,7 +91,6 @@ export class PostEditComponent implements OnInit {
         .subscribe(
           (message: string) => {
             console.log(message);
-            this.postService.updatePost(post, this.id);
             this.postForm.reset();
             this.router.navigate(["/post"]); 
           }, 
@@ -95,7 +100,6 @@ export class PostEditComponent implements OnInit {
       this.postStorageService.createPost(post)
         .subscribe(
           (newPost: PostModel) => {
-            this.postService.addPost(newPost);
             this.postForm.reset();
             this.router.navigate(["/post"]);
           },

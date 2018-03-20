@@ -47,7 +47,7 @@ export class CommentService{
 	//CREATE COMMENT, /api/post/:id/comment
   createComment(index: string, text: string) {
     this.loaderService.handleLoader(true);
-    const token = this.authService.getToken();
+    const token = localStorage.getItem('token');
     const headers = new Headers({'authorization': `bearer ${token}`});
     return this.http.post(`${this.contactUrl}/${index}/comment`, {text: text}, {headers: headers}).map((res:Response) => {
       this.loaderService.handleLoader(false);
@@ -71,7 +71,7 @@ export class CommentService{
   //UPDATE COMMENT
   updateComment(indexPost: string, indexComment: string, text: string){
     this.loaderService.handleLoader(true);
-  	const token = this.authService.getToken();
+  	const token = localStorage.getItem('token');
     const headers = new Headers({'authorization': `bearer ${token}`});
     return this.http.patch(`${this.contactUrl}/${indexPost}/comment/${indexComment}`, {text: text}, {headers: headers}).map((res: Response) => {
     	this.loaderService.handleLoader(false);
@@ -91,7 +91,7 @@ export class CommentService{
   //DELETE COMMENT, /api/post/:idPost/comment/:idComment
   deleteComment(indexComment: string){
     this.loaderService.handleLoader(true);
-    const token = this.authService.getToken();
+    const token = localStorage.getItem('token');
     const headers = new Headers({'authorization': `bearer ${token}`});
     return this.http.delete(`${this.contactUrl}/generico/comment/${indexComment}`, {headers: headers}).map((res: Response) => {
       this.loaderService.handleLoader(false);

@@ -8,7 +8,6 @@ import { Observable } from "rxjs";
 import {LoaderService} from '../loader/loader.service';
 @Injectable()
 export class AuthService {
-	token: string;
 	/*
     crear nuevo usuario
     logearse
@@ -38,9 +37,9 @@ export class AuthService {
     })
     .subscribe(
       (token: any)=>{
-    		this.token = token.token;
+        localStorage.setItem('token', token.token);
+        localStorage.setItem('user', JSON.stringify(token.user));
         this.userService.setUser(token.user);
-    		console.log(token);
         this.router.navigate(['/']);
   	  },
       error => console.log(error)
@@ -61,9 +60,9 @@ export class AuthService {
     })
     .subscribe(
       (token: any) => {
-  		  this.token = token.token;
+        localStorage.setItem('token', token.token);
+        localStorage.setItem('user', JSON.stringify(token.user));
         this.userService.setUser(token.user);
-  		  console.log(token);
         this.router.navigate(['/']);
   	  },
       error => console.log(error)
@@ -71,17 +70,13 @@ export class AuthService {
   }
 
   logout() {
+    localStorage.clear();
     this.userService.clearUser();
-  	this.token = null;
     this.router.navigate(['/']);
   }
 
-  getToken(){
-  	return this.token;
-  }
-
   isAuthenticated(){
-  	return this.token != null;
+    return localStorage.getItem('token') !== null;
   }
 
 }
