@@ -50,7 +50,8 @@ router.post("/signup", (req, res, next)=> {
 								_id: result._id,
 								created_at: result.created_at,
 								email: result.email,
-								username: result.username
+								username: result.username,
+								user_type: result.user_type
 							}
 						});
 					})
@@ -65,21 +66,6 @@ router.post("/signup", (req, res, next)=> {
 	});
 });
 
-//index users, usar solo como moderador
-router.get("/", function(req, res, next){
-	User.find({})
-	.then(user => {
-		res.status(200).json({
-			message: "Success",
-			user: user
-		});
-	})
-	.catch(err => {
-		res.status(500).json({
-			message: "Usuarios no encontrados"
-		});
-	})
-});
 
 //SHOW user
 router.get("/:id",(req, res, next) => {
@@ -138,7 +124,8 @@ router.post("/login", (req, res, next)=>{
 							_id: user[0]._id,
 							created_at: user[0].created_at,
 							email: user[0].email,
-							username: user[0].username
+							username: user[0].username,
+							user_type: user[0].user_type
 						}
 					});
 				}
@@ -159,7 +146,7 @@ router.post("/login", (req, res, next)=>{
 router.delete("/:userId", CheckAuth.checkAuth, (req, res, next) => {
 	console.log("lograste entrar");
 	console.log(req.userData);
-	const id = req.params.userId;
+	const id = req.userData.userId;
 	User.remove({ _id: id })
 	.exec()
 	.then(deleteUser => {

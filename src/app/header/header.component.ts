@@ -27,6 +27,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.userService.setUser(JSON.parse(localStorage.getItem('user')));
   }
 
+  isAdmin() {
+    if(this.authService.isAuthenticated()) {
+      console.log("Estoy dentro");
+      console.log(this.user.user_type);
+      return this.user.user_type == 'Admin';
+    }
+  }
+
   ngOnDestroy(){
   	this.subscription.unsubscribe();
   }

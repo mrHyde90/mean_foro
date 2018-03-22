@@ -50,8 +50,6 @@ export class CommentListComponent implements OnInit, OnDestroy {
 }
 
 /*
-   estilizar el profile
-   poner los componentes del owner 
    crear la paginacion
    crear el search
    optimizar 

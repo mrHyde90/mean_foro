@@ -6,6 +6,7 @@ const Post = require("./server/models/post");
 const Comment = require("./server/models/comment");
 const User = require("./server/models/user");
 const postRoutes = require("./server/routes/apiPost");
+const ownerRoutes = require("./server/routes/apiOwner");
 const commentRoutes = require("./server/routes/apiComment");
 const authRoutes = require("./server/routes/apiAuth");
 const seedDB = require("./server/seedDB");
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 app.use("/api/post", postRoutes);
 app.use("/api/post/:id/comment", commentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/owner", ownerRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(__dirname + '/dist/index.html');

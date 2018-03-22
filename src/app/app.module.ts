@@ -34,6 +34,9 @@ import { ErrorComponent } from './error/error.component';
 import {ErrorService} from './error/error.service';
 import { LoaderComponent } from './loader/loader.component';
 import {LoaderService} from './loader/loader.service';
+import { OwnerComponent } from './owner/owner.component';
+import {OwnerStorageService} from './owner/owner-storage.service';
+import { UserDetailComponent } from './owner/user-detail/user-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +59,9 @@ import {LoaderService} from './loader/loader.service';
     CommentCreateComponent,
     CommentItemComponent,
     ErrorComponent,
-    LoaderComponent
+    LoaderComponent,
+    OwnerComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +70,7 @@ import {LoaderService} from './loader/loader.service';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [PostStorageService, PostService, AuthService, UserService, CommentService, ErrorService, LoaderService],
+  providers: [PostStorageService, PostService, AuthService, UserService, CommentService, ErrorService, LoaderService, OwnerStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

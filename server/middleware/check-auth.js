@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const User = require("../models/user");
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 //poner el token en el header
@@ -16,6 +17,39 @@ exports.checkAuth = (req, res, next) => {
         });
     }
 };
+
+exports.checkAdminShip = (req, res, next) => {
+    try {
+        //para quitar el bearer
+        console.log("estas dentro del check");
+        const token = req.headers.authorization.split(" ")[1];
+        const decoded = jwt.verify(token, "secret");
+        req.userData = decoded;
+        next();
+    } catch (error) {
+        return res.status(401).json({
+            message: "Auth Failed"
+        });
+    }
+    const userId = req.userData.userId;
+    User.findById(userId)
+    .exec()
+    .then(foundUser => {
+        if (foundUser.user_type == "Admin") {
+            console.log("Admin");
+            next();
+        } else {
+            res.status(401).json({
+                message: "No eres Admin"
+            });
+        }
+    })
+    .catch(err => {
+        return res.status(401).json({
+            message: "Usuario no encontrado"
+        });
+    })
+}
 
 exports.checkPostOwnerShip = (req, res, next) => {
     try {

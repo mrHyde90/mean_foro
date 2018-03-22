@@ -3,4 +3,5 @@ export class UserModel {
 	created_at?: Date;
 	email: string;
 	username: string;
+	user_type: string
 }

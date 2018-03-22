@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import {PostModel} from './post-model';
-import {Comment} from './comment-model';
-import {PostService} from './post.service';
-import {AuthService} from '../auth/auth.service';
 import { ErrorService } from "../error/error.service";
 import { Observable } from "rxjs";
 import 'rxjs/Rx';
@@ -15,8 +12,7 @@ import {LoaderService} from '../loader/loader.service';
 export class PostStorageService {
 	private contactUrl = "/api/post";
 
-  constructor(private http:Http, 
-              private authService: AuthService,
+  constructor(private http:Http,
               private errorService: ErrorService,
               private loaderService: LoaderService) { }
 

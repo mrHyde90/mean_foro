@@ -5,6 +5,7 @@ import {SinginComponent} from './auth/singin/singin.component';
 import {SingupComponent} from './auth/singup/singup.component';
 import {PostComponent} from './post/post.component';
 import {HomeComponent} from './home/home.component';
+import {OwnerComponent} from './owner/owner.component';
 import {PostEditComponent} from './post/post-edit/post-edit.component';
 import {PostDetailComponent} from './post/post-detail/post-detail.component';
 import {PostListComponent} from './post/post-list/post-list.component';
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
 		{path: ":id", component: PostDetailComponent},
 		{path: ":id/edit", component: PostEditComponent}
 	]},
+	{path: "owner", component: OwnerComponent},
 	{path: "not-found", component: ErrorPageComponent, data: {message: 'message not found!'}},
   	{path: "**", redirectTo: '/not-found'}
 ];

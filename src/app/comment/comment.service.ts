@@ -2,7 +2,6 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import {Comment} from '../post/comment-model';
 import { Http, Response, Headers } from '@angular/http';
-import {AuthService} from '../auth/auth.service';
 import { ErrorService } from "../error/error.service";
 import { Observable } from "rxjs";
 import {LoaderService} from '../loader/loader.service';
@@ -16,8 +15,7 @@ export class CommentService{
 
 	private contactUrl = "/api/post";
 
-  constructor(private http:Http, 
-              private authService: AuthService,
+  constructor(private http:Http,
               private errorService: ErrorService,
               private loaderService: LoaderService) { }
 

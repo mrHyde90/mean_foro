@@ -1,0 +1,12 @@
+<div  class="row">
+  <div class="col-md-12">
+    <h2 *ngIf="user">User Details</h2>
+    <h2 *ngIf="!user">Selecciona un usuario</h2>
+  </div>
+</div>
+<div *ngIf="user" class="row">
+	<p>{{user.username}}</p>
+	<p>{{user.email}}</p>
+	<p>{{user.created_at}}</p>
+	<p>{{user.user_type}}</p>
+</div>
