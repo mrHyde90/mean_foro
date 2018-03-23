@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, URLSearchParams } from '@angular/http';
 import {PostModel} from './post-model';
 import { ErrorService } from "../error/error.service";
 import { Observable } from "rxjs";
@@ -17,9 +17,11 @@ export class PostStorageService {
               private loaderService: LoaderService) { }
 
   //INDEX, /api/post
-  getPosts(){
+  getPosts(paginador: Number){
     this.loaderService.handleLoader(true);
-  	return this.http.get(this.contactUrl).map((res: Response) => {
+    let params = new URLSearchParams();
+    params.set('pagina', paginador.toString());
+  	return this.http.get(this.contactUrl, {params: params}).map((res: Response) => {
   		const allPosts:PostModel[] = res.json();
       for(let post of allPosts){
         if(!post["comments"]){

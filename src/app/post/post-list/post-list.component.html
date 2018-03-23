@@ -1,6 +1,5 @@
 <app-loader></app-loader>
 <div class="container">
-<a class="btn btn-default" routerLink="new" *ngIf="authService.isAuthenticated()">Add Post</a> 
 	<div class="row">
 		<div class="col-xs-12">
 			<app-post-item
@@ -8,4 +7,6 @@
 				[postItem] ="post"></app-post-item> 
 		</div>
 	</div>
+	<button type="button" class="btn btn-primary" *ngIf="todabia" (click)="cargarPosts()">Cargar mas posts</button>
+	<br>
 </div>

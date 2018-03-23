@@ -18,9 +18,14 @@ const CheckAuth = require("../middleware/check-auth");
 
 //INDEX
 router.get("/", function(req, res){
+	const pagination = parseInt(req.query.pagina);
+	console.log(pagination);
+	console.log(typeof(pagination));
 	console.log("estas dentro de la api");
 	Post.find({})
 	.sort({created_at: -1})
+	.limit(4)
+	.skip(pagination * 4)
 	.exec()
 	.then(foundPosts => {
 		const newPost = foundPosts.map(foundPost => {

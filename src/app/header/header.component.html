@@ -23,6 +23,7 @@
 
         <ng-template [ngIf]="authService.isAuthenticated()">
           <li ><a (click)="onLogout()" >Logout</a></li>
+          <li><a  routerLink="/post/new" >Add Post</a></li>
 
           <li class="dropdown" appDropdown >
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{user.username}} <span class="caret"></span></a>
