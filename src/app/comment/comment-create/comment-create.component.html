@@ -1,4 +1,4 @@
-<div class="formulario" *ngIf="authService.isAuthenticated()">
+<div class="formulario" *ngIf="isAuthenticated()">
 	<form (ngSubmit)="onSubmitComment(f)" #f="ngForm">
         <div class="form-group">
             <label for="content">Content</label>

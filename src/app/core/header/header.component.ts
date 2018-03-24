@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {AuthService} from '../auth/auth.service';
-import {UserService} from '../shared/user.service';
-import {UserModel} from '../shared/user-model';
+import {AuthService} from '../../auth/auth.service';
+import {UserService} from '../../shared/user.service';
+import {UserModel} from '../../shared/user-model';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
@@ -41,6 +41,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onLogout(){
   	this.authService.logout();
+  }
+
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
   }
 
 }

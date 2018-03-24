@@ -50,8 +50,7 @@ export class CommentListComponent implements OnInit, OnDestroy {
 }
 
 /*
-   crear la paginacion
-   crear el search
+   crear el search-
    optimizar 
    estilizar el contenido
 */

@@ -47,4 +47,8 @@ export class CommentCreateComponent implements OnInit {
   	form.resetForm();
   }
 
+  isAuthenticated() {
+    return this.authService.isAuthenticated();
+  }
+
 }

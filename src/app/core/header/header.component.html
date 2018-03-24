@@ -16,12 +16,12 @@
         <li routerLinkActive="active"><a routerLink="/post">Posts<span class="sr-only">(current)</span></a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <ng-template [ngIf]="!authService.isAuthenticated()">
+        <ng-template [ngIf]="!isAuthenticated()">
           <li routerLinkActive="active"><a routerLink="/signin">SignIn</a></li>
           <li routerLinkActive="active"><a routerLink="/signup">SignUp</a></li>
         </ng-template>
 
-        <ng-template [ngIf]="authService.isAuthenticated()">
+        <ng-template [ngIf]="isAuthenticated()">
           <li ><a (click)="onLogout()" >Logout</a></li>
           <li><a  routerLink="/post/new" >Add Post</a></li>
 

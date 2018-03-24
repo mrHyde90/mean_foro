@@ -8,7 +8,7 @@ import 'rxjs/Rx';
   styleUrls: ['./owner.component.css']
 })
 export class OwnerComponent implements OnInit {
-	private users: UserModel[];
+	users: UserModel[];
 	selectedUser: UserModel;
   constructor(private ownerStorageService: OwnerStorageService) { }
 

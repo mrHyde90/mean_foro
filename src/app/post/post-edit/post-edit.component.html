@@ -33,7 +33,7 @@
 
 		          <div 
 		            class="form-group"
-		            *ngFor="let categoryControl of postForm.get('categories').controls; let i = index" >
+		            *ngFor="let categoryControl of getControls(); let i = index" >
 					<p>{{categoryControl.value}}</p>
 					<button 
 			          class="btn btn-default" 

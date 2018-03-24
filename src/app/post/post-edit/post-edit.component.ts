@@ -62,6 +62,10 @@ export class PostEditComponent implements OnInit {
     });
   }
 
+  getControls() {
+    return (<FormArray>this.postForm.get('categories')).controls;
+  }
+
   onAddCategory(nameInput: string){
     if(this.tengoCategorias.length < 5 && !this.tengoCategorias.includes(nameInput)){
       this.tengoCategorias.push(nameInput);
