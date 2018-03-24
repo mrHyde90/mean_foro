@@ -13,7 +13,7 @@ const seedDB = require("./server/seedDB");
 const http = require('http');
 
 const url = "mongodb://localhost/mean_foro";
-mongoose.connect(url);
+mongoose.connect( process.env.MONGODB_URI || url);
 mongoose.Promise = global.Promise;
 
 var distDir = __dirname + "/dist/";
